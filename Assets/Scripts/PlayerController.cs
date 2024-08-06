@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 7.0f;
     private Rigidbody rb;
     public LayerMask groundLayer;
-    public float raycastDistance = 0.6f;
+    public float raycastDistance = 1.1f;
 
     private int desiredlane = 1; // 0: Left, 1: Middle, 2: Right
     public float laneDistance = 4.0f;
