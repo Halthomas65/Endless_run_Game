@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // private CharacterController controller;
     private Vector3 direction;
     public float forwardSpeed = 5.0f;
 
     public float jumpForce = 7.0f;
+    public float fallGravity = 20.0f;
+
     private Rigidbody rb;
     public LayerMask groundLayer;
     public float raycastDistance = 1.1f;
@@ -21,12 +24,30 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>(); 
+        rb = GetComponent<Rigidbody>();
+        // controller = GetComponent<CharacterController>();
+
+        // TODO: Reset the game
+        // Time.timeScale = 1;
+    }
+
+    private void FixedUpdate()
+    {
+        // controller.Move(direction * Time.fixedDeltaTime);
+
+        // TODO: Game Over check
+
+
+        // TODO: Increase speed
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        // TODO: Game Over check
+
+
         // Check if the player is grounded
         RaycastHit hit;
         isGrounded = Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance, groundLayer);
@@ -36,7 +57,16 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+        // Falling
+        if (!isGrounded && rb.velocity.y < 0)
+        {
+            rb.AddForce(Vector3.down * fallGravity, ForceMode.Acceleration);
+        }
+        // TODO: Slide
 
+
+        // Get lane change input
+        // TODO: Add touch input
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             desiredlane--;
@@ -54,8 +84,8 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // Calculate where we should be in the future
 
+        // Calculate where we should be in the future
         Vector3 targetPosition = transform.position.z * transform.forward + transform.position.y * transform.up;
 
         if (desiredlane == 0)
@@ -68,13 +98,29 @@ public class PlayerController : MonoBehaviour
         }
 
         transform.position = Vector3.Lerp(transform.position, targetPosition, 80 * Time.deltaTime);
+        // if (transform.position != targetPosition)
+        // {
+        //     Vector3 diff = targetPosition - transform.position;
+        //     Vector3 moveDir = diff.normalized * 25 * Time.deltaTime;
+        //     if (moveDir.sqrMagnitude < diff.sqrMagnitude)
+        //     {
+        //         controller.Move(moveDir);
+        //     }
+        //     else
+        //     {
+        //         controller.Move(diff);
+        //     }
+        // }
 
         // Move the player forward
         transform.position += new Vector3(0, 0, forwardSpeed) * Time.deltaTime;
+        // controller.Move(Vector3.forward * forwardSpeed * Time.deltaTime);
     }
+
 
 
     private void Jump()
     {
+
     }
 }
