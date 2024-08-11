@@ -28,12 +28,15 @@ public class PlayerController : MonoBehaviour
         // controller = GetComponent<CharacterController>();
 
         // TODO: Reset the game
-        // Time.timeScale = 1;
+        Time.timeScale = 1;
+
     }
 
     private void FixedUpdate()
     {
-        // controller.Move(direction * Time.fixedDeltaTime);
+        // Move the player forward
+        transform.position += new Vector3(0, 0, forwardSpeed) * Time.deltaTime;
+        // controller.Move(Vector3.forward * forwardSpeed * Time.deltaTime);
 
         // TODO: Game Over check
 
@@ -98,29 +101,20 @@ public class PlayerController : MonoBehaviour
         }
 
         transform.position = Vector3.Lerp(transform.position, targetPosition, 80 * Time.deltaTime);
-        // if (transform.position != targetPosition)
-        // {
-        //     Vector3 diff = targetPosition - transform.position;
-        //     Vector3 moveDir = diff.normalized * 25 * Time.deltaTime;
-        //     if (moveDir.sqrMagnitude < diff.sqrMagnitude)
-        //     {
-        //         controller.Move(moveDir);
-        //     }
-        //     else
-        //     {
-        //         controller.Move(diff);
-        //     }
-        // }
-
-        // Move the player forward
-        transform.position += new Vector3(0, 0, forwardSpeed) * Time.deltaTime;
-        // controller.Move(Vector3.forward * forwardSpeed * Time.deltaTime);
     }
-
 
 
     private void Jump()
     {
 
+    }
+
+    // Clliision
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Obstacle")
+        {
+            PlayerManager.gameOver = true;
+        }
     }
 }
