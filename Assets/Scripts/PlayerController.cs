@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Animator animator;
+    public CapsuleCollider collider;
 
     // private CharacterController controller;
     private Vector3 direction;
     public float forwardSpeed = 5.0f;
+    public float maxSpeed = 10.0f;
 
     public float jumpForce = 7.0f;
     public float fallGravity = 20.0f;
@@ -20,12 +23,14 @@ public class PlayerController : MonoBehaviour
     public float laneDistance = 4.0f;
 
     private bool isGrounded;
+    private bool isSliding = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        collider = GetComponent<CapsuleCollider>();
         // controller = GetComponent<CharacterController>();
 
         // TODO: Reset the game
@@ -40,7 +45,9 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        
+
+        animator.SetBool("isGameStarted", true);
+
         // Move the player forward
         transform.position += new Vector3(0, 0, forwardSpeed) * Time.deltaTime;
         // controller.Move(Vector3.forward * forwardSpeed * Time.deltaTime);
@@ -50,17 +57,18 @@ public class PlayerController : MonoBehaviour
 
 
         // TODO: Increase speed
-
+        if (forwardSpeed < maxSpeed)
+            forwardSpeed += 0.1f * Time.deltaTime;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-
         // Check if the player is grounded
         RaycastHit hit;
         isGrounded = Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance, groundLayer);
+        animator.SetBool("isGrounded", isGrounded);
 
         // Jump
         if ((Input.GetKeyDown(KeyCode.UpArrow) || SwipeManager.swipeUp) && isGrounded)
@@ -72,7 +80,12 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector3.down * fallGravity, ForceMode.Acceleration);
         }
+
         // TODO: Slide
+        if ((Input.GetKeyDown(KeyCode.DownArrow) || SwipeManager.swipeDown) && !isSliding)
+        {
+            StartCoroutine(Slide());
+        }
 
 
         // Get lane change input
@@ -113,6 +126,21 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
 
+    }
+
+    private IEnumerator Slide()
+    {
+        isSliding = true;
+        animator.SetBool("isSliding", true);
+        collider.height = collider.height / 2;
+        collider.center = collider.center / 2;
+
+        yield return new WaitForSeconds(1.2f);
+
+        collider.height = collider.height * 2;
+        collider.center = collider.center * 2;
+        isSliding = false;
+        animator.SetBool("isSliding", false);
     }
 
     // Clliision
