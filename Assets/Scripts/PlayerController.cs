@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
     // private CharacterController controller;
     private Vector3 direction;
     public float forwardSpeed = 5.0f;
@@ -28,15 +29,22 @@ public class PlayerController : MonoBehaviour
         // controller = GetComponent<CharacterController>();
 
         // TODO: Reset the game
-        Time.timeScale = 1;
+        // Time.timeScale = 1;  // Used in PlayerManager.cs
 
     }
 
     private void FixedUpdate()
     {
+        // Game start check
+        if (!PlayerManager.isGameStarted)
+        {
+            return;
+        }
+        
         // Move the player forward
         transform.position += new Vector3(0, 0, forwardSpeed) * Time.deltaTime;
         // controller.Move(Vector3.forward * forwardSpeed * Time.deltaTime);
+
 
         // TODO: Game Over check
 
@@ -48,7 +56,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // TODO: Game Over check
 
 
         // Check if the player is grounded
@@ -56,7 +63,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance, groundLayer);
 
         // Jump
-        if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+        if ((Input.GetKeyDown(KeyCode.UpArrow) || SwipeManager.swipeUp) && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
@@ -69,8 +76,7 @@ public class PlayerController : MonoBehaviour
 
 
         // Get lane change input
-        // TODO: Add touch input
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || SwipeManager.swipeLeft)
         {
             desiredlane--;
             if (desiredlane == -1)
@@ -78,7 +84,7 @@ public class PlayerController : MonoBehaviour
                 desiredlane = 0;
             }
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow) || SwipeManager.swipeRight)
         {
             desiredlane++;
             if (desiredlane == 3)
