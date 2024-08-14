@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public Animator animator;
-    public CapsuleCollider collider;
+    public CapsuleCollider playerCollider;
 
     // private CharacterController controller;
     private Vector3 direction;
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        collider = GetComponent<CapsuleCollider>();
+        playerCollider = GetComponent<CapsuleCollider>();
         // controller = GetComponent<CharacterController>();
 
         // TODO: Reset the game
@@ -132,13 +132,13 @@ public class PlayerController : MonoBehaviour
     {
         isSliding = true;
         animator.SetBool("isSliding", true);
-        collider.height = collider.height / 2;
-        collider.center = collider.center / 2;
+        playerCollider.height = playerCollider.height / 2;
+        playerCollider.center = playerCollider.center / 2;
 
         yield return new WaitForSeconds(1.2f);
 
-        collider.height = collider.height * 2;
-        collider.center = collider.center * 2;
+        playerCollider.height = playerCollider.height * 2;
+        playerCollider.center = playerCollider.center * 2;
         isSliding = false;
         animator.SetBool("isSliding", false);
     }
@@ -148,6 +148,8 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Obstacle")
         {
+            FindObjectOfType<AudioManager>().PlaySound("GameOver");
+
             PlayerManager.gameOver = true;
         }
     }

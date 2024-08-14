@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class PlayerManager : MonoBehaviour
     public GameObject gameOverPanel;
     public static bool isGameStarted;
     public GameObject startingText;
+    public Text coinsText;
+
+    public static int numberOfCoins;
 
     // Start is called before the first frame update
     void Start()
@@ -28,10 +32,13 @@ public class PlayerManager : MonoBehaviour
             gameOverPanel.SetActive(true);
         }
 
+        coinsText.text = "Coins: " + numberOfCoins;
+
         if (SwipeManager.tap)// && !isGameStarted)
         {
             isGameStarted = true;
             Destroy(startingText);
         }
+
     }
 }

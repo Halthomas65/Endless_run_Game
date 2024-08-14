@@ -24,7 +24,7 @@ public class TileManager : MonoBehaviour
             }
             else
             {
-                SpawnTile(Random.Range(1, tilePrefabs.Length));
+                SpawnTile(Random.Range(0, tilePrefabs.Length));
             }
         }
     }
@@ -34,7 +34,7 @@ public class TileManager : MonoBehaviour
     {
         if (playerTransform.position.z - 35 > zSpawn - (numberOfTiles * tileLength))
         {
-            SpawnTile(Random.Range(1, tilePrefabs.Length));
+            SpawnTile(Random.Range(0, tilePrefabs.Length));
             DeleteTile();
         }
     }
