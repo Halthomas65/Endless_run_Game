@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -9,7 +8,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject gameOverPanel;
     public static bool isGameStarted;
     public GameObject startingText;
-    public Text coinsText;
+    public TextMeshProUGUI coinsText;
 
     public static int numberOfCoins;
 
