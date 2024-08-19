@@ -50,13 +50,8 @@ public class PlayerController : MonoBehaviour
 
         // Move the player forward
         transform.position += new Vector3(0, 0, forwardSpeed) * Time.deltaTime;
-        // controller.Move(Vector3.forward * forwardSpeed * Time.deltaTime);
 
-
-        // TODO: Game Over check
-
-
-        // TODO: Increase speed
+        // Increase speed
         if (forwardSpeed < maxSpeed)
             forwardSpeed += 0.1f * Time.deltaTime;
     }
@@ -81,7 +76,7 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector3.down * fallGravity, ForceMode.Acceleration);
         }
 
-        // TODO: Slide
+        // Slide
         if ((Input.GetKeyDown(KeyCode.DownArrow) || SwipeManager.swipeDown) && !isSliding)
         {
             StartCoroutine(Slide());
@@ -143,7 +138,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isSliding", false);
     }
 
-    // Clliision
+    // Collision
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Obstacle")
