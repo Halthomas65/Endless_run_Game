@@ -18,6 +18,9 @@ public class PlayerManager : MonoBehaviour
         gameOver = false;
         gameOverPanel.SetActive(false);
         isGameStarted = false;
+        startingText.SetActive(true);
+
+        numberOfCoins = 0;
         
         Time.timeScale = 1;  // Used in PlayerController.cs
     }
